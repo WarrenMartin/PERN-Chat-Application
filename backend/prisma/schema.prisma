@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// read about cuid/ or uuid cuid is smaller and less space.
+model User {
+  id String @id @default(cuid())
+  username String @unique
+  fullname String
+  password String
+  gender Gender // custom field using enum
+  profilePic String
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt
+  conversationsIds String[]
+
+  conversations conversation[]
+  messages Message[]    //conversations and messages are two different tables (models)
+
+}
+
+
+
+model conversation{
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participantIds String[] // Array of User IDs
+  participants User[] // Users in this conversation
+
+  messageIDs String[] // Array of Message IDs
+  messages Message[] // Messages in this conversation
+}
+
+model Message {
+  id String @id @default(cuid()) // Unique message ID
+
+  conversationId String // Foreign key to conversation to know which convo this message belongs to
+  conversation conversation @relation(fields: [conversationId], references: [id]) // here the ref is the id in the convo model so they are linked
+
+  senderId String
+  sender User @relation(fields:[senderId],references: [id])
+
+  body String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+
+
+
+enum Gender{
+  male
+  female
+}
+
+//  1. User Table (Users of the chat app)
+// Each user has a unique id, username, fullname, and other attributes.
+// Users can participate in multiple conversations and send multiple messages.
+
+// id	username	fullname	password	gender	profilePic	createdAt	updatedAt
+// u_1	Alice	Alice W	hash123	female	pic1.jpg	now()	now()
+// u_2	Bob	Bob M	hash456	male	pic2.jpg	now()	now()
+// {
+//   "id": "u_1",
+//   "username": "Alice",
+//   "fullname": "Alice W",
+//   "password": "hash123",
+//   "gender": "female",
+//   "profilePic": "pic1.jpg",
+//   "createdAt": "2024-03-20T10:00:00Z",
+//   "updatedAt": "2024-03-20T10:00:00Z"
+// }
+
+// 🗂️ 2. conversation Table (Chat threads)
+
+// id	createdAt	updatedAt	participantIds	messageIDs
+// conv_1	now()	now()	["u_1", "u_2"]	["msg_1", "msg_2"]
+
+// {
+//   "id": "conv_1",
+//   "createdAt": "2024-03-20T10:00:00Z",
+//   "updatedAt": "2024-03-20T10:00:00Z",
+//   "participantIds": ["u_1", "u_2"],
+//   "messageIDs": ["msg_1", "msg_2"]
+// }
+
+
+// 🗂️ 3. Message Table (Individual messages sent in a conversation)
+// Each message belongs to one conversation and is sent by a user.
+
+// id	conversationId	senderId	body	createdAt	updatedAt
+// msg_1	conv_1	u_1	"Hello, Bob!"	now()	now()
+// msg_2	conv_1	u_2	"Hey Alice!"	now()	now()
+
+// {
+//   "id": "msg_1",
+//   "conversationId": "conv_1",
+//   "senderId": "u_1",
+//   "body": "Hello, Bob!",
+//   "createdAt": "2024-03-20T10:01:00Z",
+//   "updatedAt": "2024-03-20T10:01:00Z"
+// }
