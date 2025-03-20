@@ -7,6 +7,8 @@ import dotenv from "dotenv"
 
 const app=express()
 
+app.use(express.json()); // is a middleware that parses incoming JSON requests, allowing req.body to be accessible in Express.
+
 app.use("/api/auth",authRoutes) // login-signup and signout
 app.use("/api/messages",messageRoutes) // send messages receieive messages
 
