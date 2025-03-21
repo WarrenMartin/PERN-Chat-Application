@@ -34,3 +34,9 @@ app.listen(PORT, () => {
 
 // Instead of defining all routes in index.ts, we separate authentication routes in auth.route.ts.
 // This makes code cleaner and easier to manage.
+
+
+// To Dos
+
+// Add Socket IO to the server
+// Configure this server for the deployment
