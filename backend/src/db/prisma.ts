@@ -1,8 +1,6 @@
-// This is for PRISMA client
-import { PrismaClient } from "@prisma/client/extension";
+// backend/src/db/prisma.ts
+import { PrismaClient } from "@prisma/client";
 
-const prisma=new PrismaClient()
+const prisma = new PrismaClient();
 
 export default prisma;
-
-// Now with the help of the prisma object we can do the interaction with the database.

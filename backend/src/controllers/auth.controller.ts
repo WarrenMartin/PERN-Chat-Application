@@ -1,6 +1,8 @@
+
 import { Request,Response } from "express"
 import prisma from "../db/prisma.js"
 import bcryptjs from "bcryptjs"
+import generateToken from "../utils/generateToken.js"
 
 export const signup =async(req:Request,res:Response)=>{
 //  now i am going to write the logic for the signup fn, model has been created in the schema.prisma
