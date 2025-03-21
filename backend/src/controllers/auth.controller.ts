@@ -104,3 +104,27 @@ export const logout =async(req:Request,res:Response)=>{
         res.status(500).json({error:"Internal Server Error"});
     }
 }
+
+
+export const getMe=async (req:Request,res:Response)=>{
+    try {
+        const user=await prisma.user.findUnique({where:{id:req.user.id}}) //req by browser/client so will find the id to authenticate the user
+
+        if(!user){
+            return res.status(404).json({error:"user not found"});
+        }
+
+        res.status(200).json({
+            id:user.id,
+            fullName:user.fullname,
+            username:user.username,
+            profilePic:user.profilePic,
+
+        })
+    } catch (error:any) {
+        console.log("Error in getMe controller",error.message);
+        res.status(500).json({error:"Internal Server Error"});
+    }
+
+
+}
