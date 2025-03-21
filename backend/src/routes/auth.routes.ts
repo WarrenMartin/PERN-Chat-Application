@@ -15,7 +15,6 @@ router.get("/me",protectRoute,getMe)
 router.post("/login",login)
 
 router.post("/logout",logout)
-// .
 
 
 export default router;
