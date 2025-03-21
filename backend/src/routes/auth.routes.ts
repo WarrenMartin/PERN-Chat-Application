@@ -7,6 +7,7 @@ const router=express.Router();
 // @ts-ignore - Suppress type checking for this line
 router.post("/signup",signup)
 
+// @ts-ignore - Suppress type checking for this line
 router.post("/login",login)
 
 router.post("/logout",logout)
