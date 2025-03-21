@@ -1,21 +1,28 @@
 // backend/src/index.ts
 import express from "express";
-import authRoutes from "./routes/auth.route.js";
+import dotenv from "dotenv";
+import authRoutes from "./routes/auth.routes.js"; // Ensure correct file name
 import messageRoutes from "./routes/message.route.js";
-import dotenv from "dotenv"
+import cookieParser from "cookie-parser";
 
 
-const app=express()
+// Configure environment variables
+dotenv.config();
 
-app.use(express.json()); // is a middleware that parses incoming JSON requests, allowing req.body to be accessible in Express.
+const app = express();
+const PORT = process.env.PORT || 5001;
 
-app.use("/api/auth",authRoutes) // login-signup and signout
-app.use("/api/messages",messageRoutes) // send messages receieive messages
+// Middleware
+app.use(express.json()); // Parse JSON request bodies
 
-app.listen(5001,()=>{
-    console.log("Server is running on port 5000")
-})
+// Routes
+app.use("/api/auth", authRoutes) // login-signup and signout
+app.use("/api/messages", messageRoutes) // send messages receive messages
 
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
+});
 
 // Why /api/auth?
 // REST API Best Practice
