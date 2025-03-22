@@ -13,7 +13,7 @@
     "lucide-react": "^0.379.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hot-toast": "^2.4.1",
+    "react-hot-toast": "^2.5.2",
     "react-router-dom": "^6.30.0",
     "socket.io-client": "^4.7.5",
     "zustand": "^4.5.2"
