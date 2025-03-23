@@ -4,12 +4,13 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js"; // Ensure correct file name
 import messageRoutes from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
+import { app, server } from "./socket/socket.js";
 
 
 // Configure environment variables
 dotenv.config();
 
-const app = express();
+
 const PORT = process.env.PORT || 5001;
 
 app.use(cookieParser()); //parsing cookes
@@ -21,7 +22,7 @@ app.use("/api/auth", authRoutes) // login-signup and signout
 app.use("/api/messages", messageRoutes) // send messages receive messages
 
 // Start server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 });
 

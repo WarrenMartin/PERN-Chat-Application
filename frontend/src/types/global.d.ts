@@ -1,14 +1,7 @@
-// The global.d.ts file in TypeScript is used to declare global types and interfaces that can be accessed throughout the entire project without needing explicit imports. 🚀
+// global.d.ts is a special file. Types added here can be used globally in the project without importing them.
 
-type ConversationType={
-    id:string,
-    fullName:string,
-    profilePic:string;
+type ConversationType = {
+	id: string;
+	fullName: string;
+	profilePic: string;
 };
-
-
-
-
-
-
-
