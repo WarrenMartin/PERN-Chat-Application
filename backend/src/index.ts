@@ -1,43 +1,30 @@
-// backend/src/index.ts
 import express from "express";
-import dotenv from "dotenv";
-import authRoutes from "./routes/auth.routes.js"; // Ensure correct file name
-import messageRoutes from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
+import path from "path";
+
+import authRoutes from "./routes/auth.route.js";
+import messageRoutes from "./routes/message.route.js";
+
+import dotenv from "dotenv";
 import { app, server } from "./socket/socket.js";
-
-
-// Configure environment variables
 dotenv.config();
 
-
 const PORT = process.env.PORT || 5001;
+const __dirname = path.resolve();
 
-app.use(cookieParser()); //parsing cookes
-// Middleware
-app.use(express.json()); // Parse JSON request bodies
+app.use(cookieParser()); // for parsing cookies
+app.use(express.json()); // for parsing application/json
 
-// Routes
-app.use("/api/auth", authRoutes) // login-signup and signout
-app.use("/api/messages", messageRoutes) // send messages receive messages
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
 
-// Start server
+if (process.env.NODE_ENV !== "development") {
+	app.use(express.static(path.join(__dirname, "/frontend/dist")));
+	app.get("*", (req, res) => {
+		res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+	});
+}
+
 server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
+	console.log("Server is running on port " + PORT);
 });
-
-// Why /api/auth?
-// REST API Best Practice
-
-// /api/ prefix indicates that these routes belong to an API (helps in structuring endpoints).
-// auth refers to authentication-related routes (e.g., login, signup, logout).
-// Keeps Code Modular
-
-// Instead of defining all routes in index.ts, we separate authentication routes in auth.route.ts.
-// This makes code cleaner and easier to manage.
-
-
-// To Dos
-
-// Add Socket IO to the server
-// Configure this server for the deployment
